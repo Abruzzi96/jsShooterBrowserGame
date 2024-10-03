@@ -10,9 +10,21 @@
     <div id="game-container">
         <div id="player"></div>
         <div id="scoreboard">
-            Score: <span id="score">0</span> | Lives: <span id="lives">3</span> | Time: <span id="timer">60</span>
+            Score: <span id="score">0</span> | Lives: <span id="lives">3</span> | Time: <span id="timer">60</span> | FPS: <span id="fps">0</span>
         </div>
-        <div id="pause-menu">Paused - Press P to Resume</div>
+
+        <!-- Pause Menu -->
+        <div id="pause-menu">
+            Paused - Press P or ESC to Resume<br/>
+            <button id="pause-restart-button">Restart Game</button> <!-- Correct placement of Restart Button -->
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over">
+            <p>Game Over!</p>
+            <p>Final Score: <span id="final-score">0</span></p>
+            <button id="restart-button">Restart Game</button>
+        </div>
     </div>
 
     <script src="game.js"></script>

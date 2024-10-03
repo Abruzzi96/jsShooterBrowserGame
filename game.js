@@ -4,11 +4,28 @@ const livesDisplay = document.getElementById('lives');
 const timerDisplay = document.getElementById('timer');
 const pauseMenu = document.getElementById('pause-menu');
 
+const gameOverScreen = document.getElementById('game-over');
+const finalScoreDisplay = document.getElementById('final-score');
+const restartButton = document.getElementById('restart-button');
+const pauseRestartButton = document.getElementById('pause-restart-button');
+
+const fpsDisplay = document.getElementById('fps');
+let lastFrameTime = performance.now();
+let frameCount = 0;
+
+// Event listeners for keyboard input
+document.addEventListener('keydown', (e) => keys[e.code] = true);
+document.addEventListener('keyup', (e) => keys[e.code] = false);
+
+// Restart the game
+restartButton.addEventListener('click', restartGame);
+pauseRestartButton.addEventListener('click', restartGame);
+
 let score = 0;
 let lives = 3;
 let gameTime = 60;
 let paused = false;
-let speed = 5;
+let speed = 7;
 let bulletSpeed = 10;
 let enemySpeed = 1;
 let playerPos = { y: window.innerHeight - 100, x: window.innerWidth / 2 - 25 }; 
@@ -16,15 +33,11 @@ let keys = {};
 let bullets = [];
 let enemies = [];
 let enemySpawnInterval = 2000;
-let canShoot = true;  // To handle shooting delay
-
-// Handle keydown and keyup events
-document.addEventListener('keydown', (e) => keys[e.code] = true);
-document.addEventListener('keyup', (e) => keys[e.code] = false);
+let canShoot = true; 
 
 // Pause toggle
 document.addEventListener('keydown', (e) => {
-    if (e.code === 'KeyP') {
+    if (e.code === 'KeyP' || e.code === 'Escape') {
         paused = !paused;
         pauseMenu.style.display = paused ? 'block' : 'none';
     }
@@ -46,6 +59,17 @@ function gameLoop() {
             }, 300); // Adjust delay as needed
         }
     }
+
+    // Calculate FPS
+    let now = performance.now();
+    frameCount++;
+    if (now - lastFrameTime >= 1000) { // Update FPS every second
+        let fps = frameCount;
+        fpsDisplay.textContent = fps;
+        frameCount = 0;
+        lastFrameTime = now;
+    }
+
     requestAnimationFrame(gameLoop);
 }
 
@@ -134,12 +158,44 @@ function checkCollisions() {
     });
 }
 
+function restartGame() {
+    // Reset game variables
+    score = 0;
+    lives = 3;
+    gameTime = 60;
+    bullets = [];
+    enemies = [];
+    
+    // Hide the game over screen
+    gameOverScreen.style.display = 'none';
+
+    // Hide the pause menu
+    pauseMenu.style.display = 'none';
+
+    // Reset UI
+    scoreDisplay.textContent = score;
+    livesDisplay.textContent = lives;
+    timerDisplay.textContent = gameTime;
+
+    // Resume the game
+    paused = false;
+}
+
 function loseLife() {
     lives--;
     if (lives <= 0) {
-        alert("Game Over!");
-        window.location.reload();
+        gameOver();
     }
+}
+
+function gameOver() {
+    // Stop the game
+    paused = true;
+    gameOverScreen.style.display = 'block';  // Show the game over screen
+    finalScoreDisplay.textContent = score;   // Display the final score
+
+    // Hide the pause menu if it's visible
+    pauseMenu.style.display = 'none';
 }
 
 // Countdown timer
