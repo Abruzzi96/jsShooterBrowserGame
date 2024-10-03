@@ -1,3 +1,18 @@
+const startButton = document.getElementById('start-button');
+const startMenu = document.getElementById('start-menu');    
+
+// Event listener for starting the game
+startButton.addEventListener('click', startGame);
+
+function startGame() {
+    paused = false;  // Unpause the game
+    startMenu.style.display = 'none';  // Hide the start button after the game begins
+    requestAnimationFrame(gameLoop);   // Start the game loop
+}
+
+// Initially, the game is paused
+paused = true;
+
 const player = document.getElementById('player');
 const scoreDisplay = document.getElementById('score');
 const livesDisplay = document.getElementById('lives');
@@ -23,8 +38,7 @@ pauseRestartButton.addEventListener('click', restartGame);
 
 let score = 0;
 let lives = 3;
-let gameTime = 60;
-let paused = false;
+let gameTime = 0;
 let speed = 7;
 let bulletSpeed = 10;
 let enemySpeed = 1;
@@ -34,6 +48,43 @@ let bullets = [];
 let enemies = [];
 let enemySpawnInterval = 2000;
 let canShoot = true; 
+
+// FPS OPT STARTED //
+
+const desiredFPS = 60;
+const frameDuration = 1000 / desiredFPS; // Time per frame (in ms)
+
+function gameLoop() {
+    const currentTime = performance.now();
+    const elapsed = currentTime - lastFrameTime;
+
+    // Only run the game logic if the elapsed time exceeds the duration of a frame
+    if (elapsed > frameDuration) {
+        lastFrameTime = currentTime - (elapsed % frameDuration); // Correct for any overflow
+        
+        // Run game logic here
+        if (!paused) {
+            movePlayer();
+            moveBullets();
+            moveEnemies();
+            checkCollisions();
+            updateUI();
+        }
+
+        // Update FPS display (optional)
+        let fps = Math.round(1000 / elapsed);
+        fpsDisplay.textContent = fps; // Assuming you have an element with id="fps"
+    }
+
+    // Continue the loop
+    requestAnimationFrame(gameLoop);
+}
+
+// Start the game loop
+requestAnimationFrame(gameLoop);
+
+
+// FPS OPT ENDED //
 
 // Pause toggle
 document.addEventListener('keydown', (e) => {
@@ -92,8 +143,8 @@ function shootBullet() {
     bullet.classList.add('bullet');
 
     // Position the bullet based on the player's current position
-    bullet.style.left = playerPos.x + 22 + 'px'; // Centered with the player
-    bullet.style.top = playerPos.y - 15 + 'px'; // Start right above the player
+    bullet.style.left = playerPos.x - 2 + 'px'; // Centered with the player
+    bullet.style.top = playerPos.y + 15 + 'px'; // Start right above the player
     
     document.getElementById('game-container').appendChild(bullet);
     bullets.push(bullet);
@@ -162,7 +213,7 @@ function restartGame() {
     // Reset game variables
     score = 0;
     lives = 3;
-    gameTime = 60;
+    gameTime = 0;
     bullets = [];
     enemies = [];
     
@@ -200,8 +251,8 @@ function gameOver() {
 
 // Countdown timer
 setInterval(() => {
-    if (!paused && gameTime > 0) {
-        gameTime--;
+    if (!paused) {
+        gameTime++;
         timerDisplay.textContent = gameTime;
     }
 }, 1000);
