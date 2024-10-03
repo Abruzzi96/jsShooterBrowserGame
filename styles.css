@@ -1,0 +1,58 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: lightblue;
+}
+
+#player {
+    position: absolute; /* Absolute, since the player is positioned relative to the game container */
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    left: 50%; /* Horizontally centered */
+    transform: translateX(-50%); /* Center the player */
+    top: calc(100% - 100px); /* Positioned 100px from the bottom of the container */
+}
+
+#scoreboard {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+}
+
+#pause-menu {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.enemy {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: green;
+}
+
+.bullet {
+    position: absolute;
+    width: 5px;
+    height: 15px;
+    background-color: yellow;
+}
