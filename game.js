@@ -215,7 +215,12 @@ function restartGame() {
     lives = 3;
     gameTime = 0;
     bullets = [];
+    //reset enemies
+    for (let i = 0; i < enemies.length; i++) {
+        enemies[i].remove();
+    }
     enemies = [];
+
     
     // Hide the game over screen
     gameOverScreen.style.display = 'none';

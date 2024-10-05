@@ -1,7 +1,7 @@
-it will clean up the npc/enemy after restart<br/>
-
-<br/><br/>
 it was shooting like / style u can shoot by sliding and increase the width of bullet CAN BE done<br/>
+<br/>
+
+~~it will clean up the npc/enemy after restart~~<br/>
 <br/>
 
 movement size/step for each left/right will decrease<br/>
