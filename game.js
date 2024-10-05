@@ -125,12 +125,12 @@ function gameLoop() {
 }
 
 function movePlayer() {
-    if (keys['ArrowLeft']) playerPos.x -= speed;
-    if (keys['ArrowRight']) playerPos.x += speed;
+    if (keys['ArrowLeft']) playerPos.x -= speed / 1.4;
+    if (keys['ArrowRight']) playerPos.x += speed/ 1.4;
 
     // Ensure player stays within screen bounds
-    if (playerPos.x < 0) playerPos.x = 0;
-    if (playerPos.x > window.innerWidth - 50) playerPos.x = window.innerWidth - 50;
+    if (playerPos.x < 0) playerPos.x = 25;
+    if (playerPos.x > window.innerWidth - 1) playerPos.x = window.innerWidth - 20;
 
     // Update player position based on new playerPos.x and playerPos.y values
     player.style.left = playerPos.x + 'px';
